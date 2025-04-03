@@ -101,7 +101,7 @@ const KnowledgeCard = ({thumbnail, title, initialNoteContent, initialSummaryCont
             </button>
             <div className="tabs-container">
             <div className="tabs">
-              {['Note', 'Summary', 'Mindmap'].map(tab => (
+              {['Note', 'Summary'].map(tab => (
                 <button 
                   key={tab} 
                   className={`tab ${activeTab === tab ? 'active' : ''}`}
@@ -201,11 +201,11 @@ const KnowledgeCard = ({thumbnail, title, initialNoteContent, initialSummaryCont
                 </div>
               )}
               
-              {activeTab === 'Mindmap' && (
+              {/* {activeTab === 'Mindmap' && (
                 <div className="mindmap-tab">
                   <p>Mindmap content to be implemented</p>
                 </div>
-              )}
+              )} */}
             </div>
           </div>
         </div>

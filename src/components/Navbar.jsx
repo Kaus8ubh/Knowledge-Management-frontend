@@ -13,6 +13,8 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
+import { useMediaQuery } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 
 
 const pages = ['Home', 'Suites', 'About Us'];
@@ -24,6 +26,8 @@ function Navbar() {
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const navigate = useNavigate();
   const { user, logout } = useAuth();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -101,7 +105,7 @@ function Navbar() {
               ))}
             </Menu>
           </Box>
-          <img src='Brieffy_Logo-withoutbg_zoom.png' width={'150px'}  style={{marginLeft: '20px'}}/>
+          <img src='Brieffy_Logo-withoutbg_zoom.png' width={'200px'}  style={{marginLeft: '20px'}}/>
           <Typography
             variant="h5"
             noWrap
@@ -146,9 +150,13 @@ function Navbar() {
       referrerPolicy="no-referrer"
       sx={{ width: 40, height: 40, mr: 1 }}
     > {user?.name?.charAt(0)}</Avatar>
-    <Typography sx={{ color: '#14304e', fontWeight: 600 }}>
-      {user?.name}
-    </Typography>
+    {
+      !isMobile && (
+        <Typography sx={{ color: '#14304e', fontWeight: 600, mr: 1 }}>
+          {user?.name}
+        </Typography>
+      )
+    }
   </Box>
 </Tooltip>
             <Menu

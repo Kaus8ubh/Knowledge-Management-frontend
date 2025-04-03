@@ -3,7 +3,12 @@ import KnowledgeCard from "./KnowledgeCard";
 
 const AllKnowledgeCards = ({ cardData, refreshCards}) => {
   if (!cardData || cardData.length === 0) {
-    return <p>No knowledge cards to display.</p>;
+    return (
+      <div className="no-cards">
+        <h3>Oops...No such cards</h3>
+        <img src='no-cards-2.png' alt="No cards found" />
+      </div>
+  );
   }
 
   return (

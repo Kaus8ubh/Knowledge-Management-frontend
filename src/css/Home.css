@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Varela+Round&display=swap");
+
 body {
     background-color: #FAFAFA;
     margin: 0;
@@ -20,6 +22,36 @@ body {
     gap: 20px;
     padding: 20px;
 }
+
+/*Search Container CSS*/
+.search-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 40px;
+    margin-top: 40px;
+}
+
+.search-container input {
+    width: 94%;
+    background: #FAFAFA;
+    padding: 10px;
+    border: none;
+    border-bottom: 1px solid #ccc;
+    font-size: 16px;
+}
+
+.search-container input:focus {
+    outline: none;
+    border-bottom: 2px solid #1f7281;
+}
+
+.search-container input::placeholder {
+    font-size: x-large;
+    font-weight: 500;
+    font-family: "Varela Round", sans-serif;
+}
+
 
 @media screen and (min-width: 1024px ) {
     .all-knowledge-cards {

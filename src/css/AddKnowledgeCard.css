@@ -2,6 +2,7 @@
     width: 100%;
     max-width: 600px;
     margin: 0;
+    margin-left: 12px;
     padding: 24px;
     border: 2px dashed lightgray;
     border-radius: 24px;
@@ -32,6 +33,10 @@
     font-size: 20px;
   }
   
+  .link-input, .note-input, .save-button {
+    font-family: "Varela Round", sans-serif;
+  }
+
   .link-input:focus, .note-input:focus {
     outline: none;
   }
@@ -80,6 +85,24 @@
     font-size: 1.5rem;
 }
 
+
+.no-cards {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    height: 100vh;
+    font-size: 24px;
+    color: #333;
+  }
+
+  @media screen and (min-width: 600px) {
+    .add-knowledge-card {
+        margin-left: 0;
+        margin-right: 12px;
+        padding: 32px;
+    }
+  }
 
   @media screen and (min-width: 978px) {
     .save-button {
