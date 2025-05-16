@@ -2,7 +2,79 @@ import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
+const token = localStorage.getItem("token");
 
+// API call for fetching all knowledge cards
+const handleFetchKnowledgeCards = async (pageNum) => {
+  try {
+    const response = await axios.get(`${backendUrl}/knowledge-card/`, {
+      params: { token, skip: (pageNum - 1) * 4, limit: 4 },
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching knowledge cards", error);
+  }
+};
+
+// API call for fetching favourite knowledge cards
+const handleFetchFavouriteKnowledgeCards = async (pageNum) => {
+  try {
+    const response = await axios.get(`${backendUrl}/knowledge-card/favourite`, {
+      params: { token, skip: (pageNum - 1) * 4, limit: 4 },
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching knowledge cards", error);
+  }
+};
+
+// API call for fetching archived knowledge cards
+const handleFetchArchiveKnowledgeCards = async (pageNum) => {
+  try {
+    const response = await axios.get(`${backendUrl}/knowledge-card/archive`, {
+      params: { token, skip: (pageNum - 1) * 4, limit: 4 },
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching knowledge cards", error);
+  }
+};
+
+// API call for fetching user-defined and default categories
+const handleFetchCategories = async (userId) => {
+  try {
+    const response = await axios.get(
+      `${backendUrl}/knowledge-card/${userId}/categories`
+    );
+    return response;
+  } catch (error) {
+    console.error("Error fetching categories", error);
+  }
+};
+
+// Create a knowledge Card
+const handleCreateKnowledgeCard = async (payload) => {
+  try {
+    const response = await axios.post(
+            `${backendUrl}/knowledge-card/`,
+            payload,
+            {
+              headers: {
+                "Content-Type": "application/json",
+              },
+              timeout: 60000,
+            }
+          );
+          return response;
+  } catch (error) {
+    console.error("Error creating knowledge card", error);
+  }
+}
+
+// API call to Toggle favourite
 const handlefavourite = async (cardData) => {
   try {
     console.log(cardData.card_id);
@@ -15,6 +87,7 @@ const handlefavourite = async (cardData) => {
   }
 };
 
+// API call to like a knowledge card
 const handleLike = async (cardData, userId) => {
   try {
     console.log(cardData.card_id);
@@ -35,6 +108,7 @@ const handleLike = async (cardData, userId) => {
   }
 };
 
+// API call to copy a public knowlegde card (of other users ONLY)
 const handleCopy = async (cardData, userId) => {
   try {
     console.log(cardData.card_id);
@@ -55,17 +129,18 @@ const handleCopy = async (cardData, userId) => {
   }
 };
 
+// API call to download a knowledge card
 const handleDownload = async (cardData, fileFormat) => {
   const res = await axios.get(
     `${backendUrl}/knowledge-card/${cardData.card_id}/download`,
     {
-      params: { format: fileFormat }, // fix: backend uses `format`, not `file_format`
+      params: { format: fileFormat },
       responseType: "blob",
-      validateStatus: () => true, // allow handling error status manually
+      validateStatus: () => true,
     }
   );
 
-  // Check for backend error responses
+  // + Errors from backend
   const isJson = res.headers["content-type"]?.includes("application/json");
   if (res.status !== 200) {
     let errorMessage = "Download failed";
@@ -89,6 +164,7 @@ const handleDownload = async (cardData, fileFormat) => {
   return res.data;
 };
 
+// API call to archive a knowledge card
 const handleArchive = async (cardData) => {
   try {
     const res = await axios.put(
@@ -100,6 +176,7 @@ const handleArchive = async (cardData) => {
   }
 };
 
+// API call to delete a knowledge card
 const handleDelete = async (cardData) => {
   try {
     const res = await axios.delete(
@@ -117,6 +194,7 @@ const handleDelete = async (cardData) => {
   }
 };
 
+// API call to update the summary and note content of a knowledge card
 const handleEdit = async (cardData, summaryContent, noteContent) => {
   try {
     const res = await axios.put(`${backendUrl}/knowledge-card/`, {
@@ -131,6 +209,7 @@ const handleEdit = async (cardData, summaryContent, noteContent) => {
   }
 };
 
+// API call to toggle a knowledge card to public or private
 const handlePublic = async (cardData) => {
   try {
     const res = await axios.put(
@@ -142,6 +221,7 @@ const handlePublic = async (cardData) => {
   }
 };
 
+// API call to view a shared knowledge card
 const handleSharedCard = async (token) => {
   try {
     const res = await axios.get(`${backendUrl}/knowledge-card/shared/${token}`);
@@ -151,6 +231,7 @@ const handleSharedCard = async (token) => {
   }
 };
 
+// API call to generate the sharing link for a knowledge card
 const handleShareLink = async (cardData) => {
   try {
     const res = await axios.post(
@@ -169,6 +250,7 @@ const handleShareLink = async (cardData) => {
   }
 };
 
+// API call to Bookmark a public knowlegde card (of other users ONLY)
 const handleBookmark = async (cardData, userId) => {
   try {
     const res = await axios.put(
@@ -186,6 +268,7 @@ const handleBookmark = async (cardData, userId) => {
   }
 };
 
+//API call to generate Questions and Answers for Q&A tab
 const handleQuestionAnswers = async (cardData) => {
   try {
     const res = await axios.post(
@@ -203,6 +286,7 @@ const handleQuestionAnswers = async (cardData) => {
   }
 };
 
+//API call to generate Knowledge Map for Knowledge Map tab
 const handleKnowledgeMap = async (cardData) => {
   try {
     const res = await axios.get(
@@ -215,6 +299,7 @@ const handleKnowledgeMap = async (cardData) => {
   }
 };
 
+//API call to Add a new tag
 const handleAddTag = async (cardData, tag, userId) => {
   try {
     const res = await axios.put(
@@ -234,6 +319,7 @@ const handleAddTag = async (cardData, tag, userId) => {
   }
 };
 
+//API call to remove a tag
 const handleRemoveTag = async (cardData, tag, userId) => {
   try {
     const res = await axios.delete(
@@ -252,6 +338,7 @@ const handleRemoveTag = async (cardData, tag, userId) => {
   }
 };
 
+// Function to get userId from token in local storage
 const getUserId = async (token) => {
   try {
     const decode = jwtDecode(token);
@@ -262,6 +349,11 @@ const getUserId = async (token) => {
 };
 
 export default {
+  handleFetchKnowledgeCards,
+  handleFetchFavouriteKnowledgeCards,
+  handleFetchArchiveKnowledgeCards,
+  handleFetchCategories,
+  handleCreateKnowledgeCard,
   handlefavourite,
   handleLike,
   handleDownload,

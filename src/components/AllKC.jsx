@@ -17,7 +17,7 @@ const AllKnowledgeCards = ({
   currentTab,
   userId,
   handleNewCategoryAdded,
-  currentFilter
+  currentFilter,
 }) => {
   const observer = useRef();
   const { user } = useContext(AuthContext);
@@ -45,7 +45,7 @@ const AllKnowledgeCards = ({
     <div className="px-8 md:px-12 mt-8">
       <div className="grid gap-6 grid-cols-[repeat(auto-fill,minmax(300px,1fr))]">
         {/* Always show SavingSkeletonCard if flag is true */}
-        {showSkeletonCard && !isSearching &&<SavingSkeletonCard />}
+        {showSkeletonCard && !isSearching && <SavingSkeletonCard />}
 
         {/* Search skeletons */}
         {isSearching && (
@@ -75,7 +75,10 @@ const AllKnowledgeCards = ({
             const isLast = index === cardData.length - 1;
             return (
               user && (
-                <div ref={isLast ? lastCardRef : null} key={card.card_id} className="h-auto">
+                <div
+                  ref={isLast ? lastCardRef : null}
+                  key={card.card_id}
+                  className="h-auto">
                   <KnowledgeCard
                     cardData={card}
                     refreshCards={refreshCards}
@@ -96,19 +99,29 @@ const AllKnowledgeCards = ({
           (!cardData || cardData.length === 0) &&
           !showSkeletonCard && (
             <div className="flex flex-col items-center justify-center w-full py-20 text-center col-span-full">
-              <img src="no-cards-2.png" alt="No Cards" className="w-64 opacity-60 mb-4" />
-              <p className="text-emerald-700 text-lg font-medium">No knowledge cards found</p>
+              <img
+                src="no-cards-2.png"
+                alt="No Cards"
+                className="w-64 opacity-60 mb-4"
+              />
+              <p className="text-emerald-700 text-lg font-medium">
+                No knowledge cards found
+              </p>
             </div>
           )}
 
         {/* Pagination loading */}
         {isLoading && hasMore && !showSkeletonCard && (
-          <SkeletonCard />
+          <>
+            <SkeletonCard />
+            <SkeletonCard />
+            <SkeletonCard />
+            <SkeletonCard />
+          </>
         )}
       </div>
     </div>
   );
 };
-
 
 export default AllKnowledgeCards;
